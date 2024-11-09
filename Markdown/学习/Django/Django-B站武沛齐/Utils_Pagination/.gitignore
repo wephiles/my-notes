@@ -1,0 +1,33 @@
+# pycharm:
+.idea/
+.venv/
+venv/
+VirtualEnv/
+.DS_Store
+
+__pycache__
+*.py[cod]
+*.$py.class
+
+# Django stuff:
+local_settings.py
+*.sqlite3
+media/
+
+# database migratons:
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# other file:
+*.zip
+*.rar
+*.txt
+*.mp3
+*.mp4
+*.xlsx
+*.docx
+*.doc
+*.pptx
+*.jpg
+*.jpeg
+*.png
