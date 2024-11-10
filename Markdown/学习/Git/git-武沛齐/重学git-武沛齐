@@ -1,0 +1,1045 @@
+<h1 style="text-align: center;">Git实战</h1>
+
+# 一、 什么是`git`
+
+git是一个**分布式版本控制软件**。
+
+-   分布式：分布式是，其中一个节点挂了，只要不是所有节点都挂了那数据就可以恢复。
+-   版本控制：
+    -   最开始：第一版、第二版、第三版、最终版、最终不修改版、最终一直不修改版...这些都是我们没有使用版本控制工具，只是使用文件复制的方式进行版本控制的方式，就是管理一个文件的好几种版本。 -- 我们以前是使用文件拷贝的方式，电脑里有很多很多文件。
+    -   慢慢出现版本控制的软件 -- 本地版本控制：本地只能看到一个文件 数据库将会你以前的文件存到另外一个地方 我们只能看到当前状态的一个版本的文件 -- 这是个进步，电脑上不会再有太多的文件，而只会只有一个版本的我们可以看到，如果我们需要以前的版本，可以通过某些方式进行回滚。 -- 但是，如果要两个人协作开发，这种版本控制不太行。
+        ![image-20241109153730667](./assets/image-20241109153730667.png)
+    -    集中式版本控制：最有代表的是SVN -- 有个问题 对于A和B，都需要提交到中心，但是如果有一方断网了，或者中心宕机了，A和B提交的话就无法提交
+        ![image-20241109154559331](./assets/image-20241109154559331.png)
+    -   分布式版本控制工具 -- 不管是中心还是A和B，都存在每一个版本，如果其中一个挂掉了，另外的只要有备份，那么就不会丢失数据。如果有新功能，先提交本地版本，再从本地版本提交中心。
+        ![image-20241109155542103](./assets/image-20241109155542103.png)
+-   软件：是个工具，安装到我们电脑上的工具。
+
+# 二、 Git实战
+
+## 2.1 下载安装`git`
+
+注意：要下载安装在自己电脑上，并且自己电脑只能管理自己的版本。 -- 后面的学习才上传`github`
+
+-   linux
+-   mac
+-   windows
+
+在windows下载安装Git，可以去网络上搜索相关操作步骤，安装好之后进行简单的配置即可。
+
+## 2.2 第一阶段 用一个故事学会`git` 自己一个人做项目
+
+一个屌丝创业的故事 -- 东北热。
+
+### 2.2.1 创业第一阶段
+
+自己**一个人**，想搭建一个平台。 -- 自己去写代码，最开始必须考虑版本控制（如果想做大的话）。
+
+在自己电脑上，新建一个胶`dbhot`(东北热)的文件夹，这个文件夹就存储所有的项目代码。
+
+假设已经写了一个月，基本功能已经实现了。
+
+![image-20241109162711796](./assets/image-20241109162711796.png)
+
+==接下来为了能够实现版本控制，接下来的几步要记住了！== -- 让git帮我们管理我们的文件夹
+
+1.   进入要管理的文件夹：
+     在windows中，点进去要管理的文件夹中
+
+2.   初始化：
+     在项目文件夹中任意位置，右键，点击Git Bash Here。
+     ![image-20241109163221881](./assets/image-20241109163221881.png)
+
+     点击过后，会出现一个黑框框，输入命令`git init`
+     ![image-20241109163330581](./assets/image-20241109163330581.png)
+     会出现一个.git的文件夹。说明可以进行管理了。
+
+3.   管理：
+     试着输入`git status` -- 检测当前文件夹下文件的状态。
+     ![image-20241109163513355](./assets/image-20241109163513355.png)
+     出现两个红色的文件名。
+
+4.   生成版本(目的)：
+     ```bash
+     git add 文件名
+     ```
+
+     ![image-20241109163710826](./assets/image-20241109163710826.png)
+     看上图，使用`git add 文件名`后，被add的那个文件==**变绿**==了，没有被add的就还是红色。 
+     注意：使用下面的命令可以将当前文件夹下所有的文件add：
+
+     ```bash
+     git add .
+     ```
+
+     ![image-20241109163943193](./assets/image-20241109163943193.png)
+     生成版本：
+
+     ```bash
+     git commit -m "这里可以随便写，要写清楚这次提交的概述信息。"
+     ```
+
+     ![image-20241109164227797](./assets/image-20241109164227797.png)
+     再次使用`git status`
+     ![image-20241109164323994](./assets/image-20241109164323994.png)
+     此时发现啥都没有了，说明git已经帮我们管理起来所有文件并生成一个版本了。
+
+### 2.2.2 继续开发
+
+假设我继续开发了一个功能，放进继续开发`.txt`文件里面去了。--对文件夹的文件做了修改
+
+![image-20241109164528089](./assets/image-20241109164528089.png)
+
+使用`git status` -- 可以检测到进行了修改
+
+![image-20241109164710487](./assets/image-20241109164710487.png)
+
+此时还需要再使用`git add 文件名`和`git commit -m "xxx"`来再次生成版本。
+
+![image-20241109164920963](./assets/image-20241109164920963.png)
+
+### 2.2.3 查看版本记录
+
+```bash
+git log
+```
+
+![image-20241109165031443](./assets/image-20241109165031443.png)
+
+### 2.2.4 简单总结
+
+```bash
+git init  # 初始化
+git status  # 查看文件状态
+
+# 管理起来
+git add .
+git add 文件名
+
+# 生成版本
+git commit -m "Add files."
+
+# 查看版本记录
+git log
+```
+
+使用`git status`命令时，文件三种状态的变化：
+
+-   红色：修改过的老文件/新增的文件 `git add` 命令 -- 变成绿色
+-   绿色： git已经管理起来了，但是没有生成版本 `git commit - m ""` 生成版本
+-   已经生成版本 -- 不显示文件夹了
+
+>   注意：上述过程中新手电脑上可能会报错 -- 关于配置的问题 -- 如果是第一次装`git`的话会报错 -- 以前安装过的就不会
+>
+>   生成版本的时候，需要告诉git是谁生成的版本 -- 需要在commit之前做一个配置：这个配置在最开始只需执行一次即可。
+>
+>   -   用户名 `git config --global user.name "这里写你的名字"`
+>   -   邮箱 `git config --global user.email "这里写你的邮箱"`
+
+## 2.3 用一个故事学会git - Git三大区域
+
+![image-20241109171058731](./assets/image-20241109171058731.png)
+
+git三大区域
+
+-   工作区 红色/没有文件显示 已管理到新文件/修改的文件： 自动检测。使用add命令将文件提交到暂存区(变绿)
+    -   已管理
+    -   新文件/修改的文件
+-   暂存区 -- 绿色 -- 暂存区的文件使用commit
+-   版本库
+
+## 2.4 第二阶段 增加一些牛逼的功能 -- 比如短视频
+
+使用`add `, `commit`等命令，和上面的顺序一样。
+
+## 2.5 第三阶段 -- 增加一个约饭的功能 -- 打擦边球的功能 但是被有关部门约谈了
+
+使用`add `, `commit`等命令，和上面的顺序一样。这次添加了一个约饭的功能（假设是v3）...
+
+现在已经有了很多版本。
+
+![image-20241109172222522](./assets/image-20241109172222522.png)
+
+有一天，有关部门说项目的约饭功能有问题，软件不能通过审核 -- 回滚。
+
+```bash
+git log  # 查看所有记录
+git reset --hard 版本号  # 这个版本号可以在git log的输出信息里面找到，每个版本对应一个版本号，直接回滚到相应的版本号即可
+```
+
+![image-20241109172522378](./assets/image-20241109172522378.png)
+
+![image-20241109172649736](./assets/image-20241109172649736.png)
+
+然后使用`git log`查看：
+
+![image-20241109172731039](./assets/image-20241109172731039.png)
+
+## 2.6 后来，通过某些方式，只要将约饭的功能改个名字就可以上线了
+
+但是，我们发现通过`git log`我们以前的`v3`版本找不到了，我们想回复到以前的`v3`版本 -- 怎么做？
+
+!这时候在查看的时候就不能用`git log`了，要用`git reflog`
+
+```bash
+git reflog
+```
+
+![image-20241109173305375](./assets/image-20241109173305375.png)
+
+要想回去，只需要再次使用`git reset --hard 版本号`即可。
+
+![image-20241109173514694](./assets/image-20241109173514694.png)
+
+## 2.7  小总结
+
+回滚与恢复
+
+```bash
+# 回滚
+git log  # 查看版本号
+git reset --hard 版本号  # 回滚
+
+# 恢复
+git reflog  # 查看已回滚的版本号
+git reset --hard 版本号  # 恢复
+```
+
+## 2.8 命令总结
+
+```bash
+git init
+git status
+git add
+git commit
+git log
+git reflog
+git reset --hard xxx
+```
+
+![image-20241109175138555](./assets/image-20241109175138555.png)
+
+## 2.9 分支
+
+![image-20241109180209322](./assets/image-20241109180209322.png)
+
+## 2.10 第四阶段 开发一个商城 还是自己一个人写 预计两个月才能开发出来
+
+假设已经写了一个月，发现线上网站出bug了 -- 刚开发了一半的这个功能怎么办？ -- 分支
+
+解决方案：
+
+![image-20241109181040625](./assets/image-20241109181040625.png)
+
+主干：默认叫`master`
+
+使用`git branch`: 打印出本项目的分支
+
+![image-20241109181403934](./assets/image-20241109181403934.png)
+
+创建新分支:
+
+```bash
+git branch dev
+```
+
+此时，`dev`分支是在`v3`版本的后面进行开发的
+
+![image-20241109181528802](./assets/image-20241109181528802.png)
+
+跳到`dev`分支，在`dev`分支上进行开发：在这个分支里面写代码是不影响`master`的
+
+```bash
+git checkout dev
+```
+
+![image-20241109181724113](./assets/image-20241109181724113.png)
+
+在dev上，我进行了一些开发：
+
+![image-20241109181853681](./assets/image-20241109181853681.png)
+
+`add`、`commit`：
+
+![image-20241109182022965](./assets/image-20241109182022965.png)
+
+然后可以使用`git log`命令
+
+![image-20241109182110114](./assets/image-20241109182110114.png)
+
+当我们切换回`master`后，使用`git log`：
+
+![image-20241109182235882](./assets/image-20241109182235882.png)
+
+这个`dev`分支上的就是我们正在开发，但是还没有开发完的代码，但是这时候已经上线的代码出现了`bug`,这时候我们需要切换回`master`进行`bug`处理：
+
+创建`bugfix`分支：
+
+```bash
+git branch bugfix
+```
+
+![image-20241109182724007](./assets/image-20241109182724007.png)
+
+切换到`bugfix`分支进行`bug`修复:
+
+```bash
+git checkout bug
+```
+
+现在修`bug`，修好后，还是`add`和`commit`
+
+修好后吗，需要将`bugfix`分支合并到`master`分支。
+
+要想合并，首先得切换回master分支。
+
+```bash
+git merge bugfix
+```
+
+![image-20241109183308833](./assets/image-20241109183308833.png)
+
+`git log`:
+
+![image-20241109183330112](./assets/image-20241109183330112.png)
+
+bug修复完毕后，已经没有用了，删除之即可。
+
+删除分支：
+
+```bash
+git branch -d bugfix
+```
+
+![image-20241109183455356](./assets/image-20241109183455356.png)
+
+现在线上代码已经正常运行了，这时候就又去`dev`分支继续开发。虽然dev分支是从master分支过来的，但是，之前创建`dev`分支的时候`bug`其实还有，但是`dev`分支最主要的目的是进行开发，所以`bug`先不管。
+
+此时过了一段时间，商城开发完毕，使用`add`和`commit`。
+
+开发完毕后，要将`dev`合并到`master`：==可能==会产生冲突，系统不知道该怎么做了，不知道要选哪一个 --  自己手动去有冲突的地方解决冲突。 -- 没有同时修改同一行的话就不会产生冲突。
+
+![image-20241109184348835](./assets/image-20241109184348835.png)
+
+冲突解决完后，直接提交就行
+
+## 2.11 命令总结
+
+-   查看分支
+    ```bash
+    git branch
+    ```
+
+-   创建分支
+    ```bash
+    git branch 分支名
+    ```
+
+-   切换分支
+    ```bash
+    git chrckout 分支名
+    ```
+
+-   合并分支 注意：谁合并谁要注意，并且可能产生冲突
+    ```bash
+    git checkout 要合并其他分支的分支
+    git merge 要合并到其他分支的分支
+    ```
+
+-   删除分支
+    ```bash
+    git branch -d 分支名
+    ```
+
+# 三、 `Git`使用工作流
+
+有个新项目，必须创建至少两个分支。
+
+-   `master`分支
+-   `dev`分支
+
+![image-20241109185739570](./assets/image-20241109185739570.png)
+
+# 四、 `github`
+
+## 4.1 注册账号
+
+此处省略
+
+## 4.2 创建远程仓库 推送到远端 --  上班之前将代码推送到github了
+
+![image-20241109191350373](./assets/image-20241109191350373.png)
+
+## 4.3 到公司了，要把代码`pull`下来
+
+第一次使用`clone`将代码拉下来。注意拉下来的看似只有一个`master`分支，其实是都拉下来了，只不过不显示，可以直接切换。
+
+![image-20241109192004024](./assets/image-20241109192004024.png)
+
+# 五、 第五阶段 进军三里屯
+
+要继续开发，要在`dev`分支上合并`master`分支。
+
+在公司继续写代码..
+
+写了很多代码..
+
+在`dev`分支上开发完后，推送到远程仓库，下班回家！
+
+回家后，切换到`dev`分支，将远端的`dev`分支的代码`pull`下来
+
+```bash
+git pull origin dev
+```
+
+于是在`dev`分支上继续肝，肝完后推送到dev分支上。
+
+睡觉。
+
+第二天到公司了，更新代码...如此循环往复即可。
+
+假设在公司开发完毕了：
+
+首先`add `、`commit`
+
+再切换到`master`分支
+
+然后合并
+
+![image-20241109195654091](./assets/image-20241109195654091.png)
+
+然后在`master`分支上推送到远程分支，就算是上线完成了。
+
+再回来`dev`分支，将`dev`分支提交到远程。
+
+以上，在公司将`dev`和`master`代码都传到远程服务器了。
+
+回家后，将`master`和`dev`分支的代码都`pull`下来即可。
+
+# 六、 忘记推送代码
+
+在公司写的代码(开发了50%)没有提交到`github`上，回家后，拿不到公司写的代码。
+
+于是在家写了点其他功能，将这这些其它代码提交到`github`上了，第二天去公司后，就需要合并，此时可能产生冲突。-- 我们发现，果然产生冲突了。
+
+![image-20241109202015830](./assets/image-20241109202015830.png)
+
+打开有冲突提示的那个文件，如下：
+
+![image-20241109202146074](./assets/image-20241109202146074.png)
+
+这时候只需要我们手动解决冲突。解决完冲突后在公司继续开发...
+
+开发完毕剩下的50%功能后`add commit push`一气呵成
+
+回家后将线上代码拉下来，继续开发继续开发即可
+
+```bash
+git pull origin dev = git fetch origin dev + git merge origin/dev
+```
+
+![image-20241109175138555](./assets/image-20241109175138555.png)
+
+# 七、 `rebase`(变基)
+
+## 7.1 `rebase`的作用
+
+使提交记录变得简洁
+
+## 7.2 `rebase`应用场景
+
+### 7.2.1 情景1 整合多个记录为一个记录
+
+![image-20241110084451279](./assets/image-20241110084451279.png)
+
+```bash
+# 进入终端 新创建一个项目
+# 假设新创建的项目叫pro_rebase
+# 我们模拟经过几天的开发已经有了很多的版本，如下图所示
+```
+
+![image-20241110085134698](./assets/image-20241110085134698.png)
+
+那么怎么合并呢？
+
+```bash
+git rebase -i 版本号  # 从当前的版本到v2版本的所有版本合并为一个版本
+git rebase -i HEAD~3  # 从当前开始找最近的三条记录进行合并
+```
+
+上述命令敲击以后，回车，会出现下面的页面：
+
+![image-20241110085751777](./assets/image-20241110085751777.png)
+
+这时候，我们要做个操作：将第二行和第三行的`pick`变成`s` -- 让当前版本合并到上面那个版本上面去
+
+![image-20241110085924497](./assets/image-20241110085924497.png)
+
+保存、退出
+
+![image-20241110090037308](./assets/image-20241110090037308.png)
+
+然后打印版本，可以看到我们已经成功合并版本：
+
+![image-20241110090137350](./assets/image-20241110090137350.png)
+
+>   [!Note]
+>
+>   ！！！注意：如果我们的代码已经提交到远程仓库了，那就最好不要再合并了。即：尽量合并那些没有被提交到远程仓库的记录。
+
+### 7.2.2 情景2 分支的处理
+
+![image-20241110090728261](./assets/image-20241110090728261.png)
+
+如果你觉得你不想要这个分支，想将两个分支整到一起，可以使用`rebase` -- 但是这样你就要取舍，是要完整的提交记录还是简洁的提交记录了。
+
+```bash
+# 假设经过一段时间的开发，已经有了dev分支，满足上述要求了
+```
+
+`git log`命令，后面可以加参数和选项：
+
+```bash
+git log --graph
+git log --graph --pretty=format:"%h %s"
+```
+
+![image-20241110091915598](./assets/image-20241110091915598.png)
+
+![image-20241110092008293](./assets/image-20241110092008293.png)
+
+第一步：用`rebase`将`dev`分支塞到`master`分支
+
+第二步：用下面的命令`rebase`一下
+
+```bash
+git rebase master
+```
+
+第三步：切换到`master`分支将`dev`分支`merge`一下即可
+
+![image-20241110092443220](./assets/image-20241110092443220.png)
+
+### 7.2.3 情景3 忘记提交代码了
+
+假设在公司忘记提交代码到远程仓库，回家后继续开发点别的功能，第二天去公司，首先要将代码`pull`下来，此时就会产生分叉，要想不产生分叉：
+
+就不要直接执行`git pull`，而是先执行`git fetch`将代码拿到本地（`pull = fetch + merge`），再用`git rebase origin/dev`即可。
+
+### 7.2.4 注意事项
+
+我在操作过程中，如果在执行`git rebase`的时候，别急，动手去解决冲突，会提醒你执行一些命令，你执行完后，使用`add commit`
+
+![image-20241110093909107](./assets/image-20241110093909107.png)
+
+最后使用 `git rebase --continue`即可。
+
+# 八、 `beyond compare`快速解决冲突
+
+## 8.1 下载安装`bsyond compare`
+
+此处省略
+
+## 8.2 在`git`中进行配置
+
+```bash
+git config --local merge.tool bc5
+git config --local mergetool.path 'D:\\software\\beyondCompare\\Beyond Compare 5'
+git config --local mergetool.keepBackup false  # 每次解决冲突后，不用保留源文件
+```
+
+## 8.3 应用 -- 解决冲突
+
+```bash
+git mergetool
+```
+
+产生冲突
+
+![image-20241110094932431](./assets/image-20241110094932431.png)
+
+配置`beyond compare`
+
+![image-20241110095556954](./assets/image-20241110095556954.png)
+
+使用：
+
+```bash
+git mergetool
+```
+
+![image-20241110095734010](./assets/image-20241110095734010.png)
+
+# 九、 命令总结
+
+```bash
+git init
+
+git status
+
+git add xx.file/.
+
+git commit -m "xxx"
+
+git remote add origin xxx.ccc.com
+
+git push -u origin master
+
+git clone xxx.ccc.com
+
+git pull origin dev
+
+git fetch origin dev
+git merge origin/dev
+
+git rebase dev
+
+git log
+git reflog
+git log --graph
+git log --graph --pretty=format:"%h %s"
+```
+
+# 十、 多人协作开发
+
+## 10.1 多人协同工作流
+
+ ![image-20241110102112314](./assets/image-20241110102112314.png)
+
+## 10.2 命令实现
+
+### 10.2.1 创建一个新项目做一个基本版本并首先上线
+
+```bash
+mkdir dbhot  # 我们的项目名就叫dbhot
+```
+
+推送到`github`上，需要创建仓库
+
+-   普通创建方式  -> settings -> collaborators -> 邀请进来 --- 在公司不适合这么干！！！
+-   创建一个组织
+    ![image-20241110104132635](./assets/image-20241110104132635.png)
+    创建完组织后，==在组织里面==创建一个新仓库，然后先将第一个版本提交上去。
+
+### 10.2.2 `tag`命令 -- 打标签
+
+```bash
+git tag -a v1 -m "第一版"
+```
+
+```bash
+git push origin --tags
+```
+
+![image-20241110105613787](./assets/image-20241110105613787.png)
+
+### 10.3 招了两个人，让其开发斗地主和炸金花
+
+### 10.3.1 自己：先创建一个`dev`分支并切换到`dev` 再将`dev`分支`push`到远程仓库
+
+```bash
+git checkout -b dev  # 创建dev分支并切换到dev分支
+```
+
+![image-20241110105942871](./assets/image-20241110105942871.png)
+
+
+
+### 10.3.2 让两个小弟注册`github`,完事后将小弟拉到咱们得账号
+
+回到组织，把小弟邀请一下
+
+![image-20241110110458114](./assets/image-20241110110458114.png)
+
+小弟就能接受到一个邮件，去邮件同意加入组织即可。
+
+同意后，查看成员：
+
+![image-20241110110853556](./assets/image-20241110110853556.png)
+
+怎么查看成员的权限呢？
+
+settings -> Member privileges
+
+![image-20241110111037558](./assets/image-20241110111037558.png)
+
+对于项目，也可以查看权限.进入项目后也可以邀请合作者！
+
+![image-20241110111307696](./assets/image-20241110111307696.png)
+
+邀请加入合作者后，让小弟先将项目克隆一份。
+
+小弟克隆完后，需要将自己要开发的功能在`dev`分支上再分一个分支。
+
+![image-20241110112018478](./assets/image-20241110112018478.png)
+
+小弟开发斗地主···
+
+开发了一段时间，开发完成了...接下来就是`code review` -- 小组长做（用`github`上的 `pull request/merge request`）。
+
+要想做`code review`，就先得做一些配置. settings -> Branches
+
+![image-20241110112755379](./assets/image-20241110112755379.png)
+
+![image-20241110112916588](./assets/image-20241110112916588.png)
+
+用流程告诉老大，做个`review` -- 首先进入小弟自己的`github`,按照下面的流程，进入`pull request`
+
+![image-20241110113317695](./assets/image-20241110113317695.png)
+
+进入新页面，填写`pull request`信息
+
+![image-20241110113632357](./assets/image-20241110113632357.png)
+
+发送后小弟的github是下面这样的：
+
+![image-20241110113928215](./assets/image-20241110113928215.png)
+
+点击右下角的`Create pull request`后，就会将这个`pull request`发送给小组长，小组长进行`code review`。
+
+对于小组长：点击`pull request`后能看到`review`请求!
+
+![image-20241110114019856](./assets/image-20241110114019856.png)
+
+点击进去：
+
+![image-20241110114116975](./assets/image-20241110114116975.png)
+
+![image-20241110114202318](./assets/image-20241110114202318.png)
+
+![image-20241110114315707](./assets/image-20241110114315707.png)
+
+![image-20241110114338043](./assets/image-20241110114338043.png)
+
+也可以命令行`review`：
+
+![image-20241110114448265](./assets/image-20241110114448265.png)
+
+也可以在网站上手动`merge review`
+
+![image-20241110114631919](./assets/image-20241110114631919.png)
+
+合并完后，说明代码`ddz`的功能已经开发完了，可以删除也可以不删除，全看自己了。
+
+领导这里：还需要`pull`一下`dev`，
+
+## 10.3 测试/预发布
+
+### 10.3.1 拆出来一个`release`分支
+
+领导切换到`dev`分支，切出来一个`release`版本
+
+测试完毕后，还是`pull request`，`merge request`即可
+
+最后删除`release`分支，然后再添加一个`tag` 再`push`上去即可。
+
+也有可能产生冲突，解决冲突即可。
+
+# 十一、 给开源项目贡献代码
+
+## 11.1 找到一个牛逼的项目
+
+比如说`tornado`
+
+网址：`https://github.com/tornadoweb/tornado`
+
+## 11.2 fort源代码
+
+![image-20241110121217349](./assets/image-20241110121217349.png)
+
+这样就会把项目搞到自己的仓库里面。
+
+只能在自己的仓库进行修改。
+
+新创建一个目录，克隆下来后进行修改。
+
+修改后，`add commit push`一气呵成
+
+然后给源代码作者提交修复`bug`的申请（申请一个`pull request`）
+
+![image-20241110122142512](./assets/image-20241110122142512.png)
+
+发送后，等作者接受，接受后，就能在作者的源码里看到源码自己提交的源码。
+
+# 十二、 其他部分
+
+## 12.1 配置文件
+
+```bash
+git config --local user.name "xxx"
+
+git config --global user.name "xxx"
+
+git config --system user.name "xxx"
+```
+
+### 12.1.1 三个配置文件：
+
+-   当前项目下的配置文件目录：配置使用`git config --local user.name "xxx"`
+    ```bash
+    ./.git/config
+    ```
+
+    ![image-20241110122651224](./assets/image-20241110122651224.png)
+
+-   全局配置 `git config --global user.name "xxx"`
+    ```bash
+    ~/.gitconfig
+    ```
+
+-   系统配置 `git config --system user.name "xxx"` -- 需要有`root`权限
+    ```bash
+    /etc/.gitconfig
+    ```
+
+### 12.1.2 应用场景
+
+```bash
+git config --local user.name "xxx"
+git config --global user.name "xxx"
+git config --system user.name "xxx"
+
+git remote add origin xxx.com  # 默认存在项目本地的配置文件下
+```
+
+## 12.2 免密登录
+
+以前是每次`push`都需要账户密码
+
+### 12.2.1 URL中实现
+
+```bash
+原来的地址:
+https://github.com/wephiles/dbhot
+修改的地址:
+https://用户名:密码@github.com/wephiles/dbhot
+
+git remote add origin https://用户名:密码@github.com/wephiles/dbhot
+...
+```
+
+### 12.2.2 SSH实现
+
+![image-20241110123653112](./assets/image-20241110123653112.png)
+
+网址是这样的：
+
+在自己的电脑上生成公钥和私钥并添加到github上 -- 去网上搜 有实现方式。
+
+生成的公钥和私钥默认放在`~/.ssh`目录下
+
+### 12.2.3 `Git`自动管理凭证
+
+# 十三、 `.gitignore`文件
+
+`.gitignore`文件：
+
+```tex
+a.h
+b.h
+*.h  # 忽略以.h结尾的都忽略
+.gitignore  # 忽略.gitignore文件
+files/ # 忽略files文件夹下的所有文件
+!c.h  # 特殊，要把c.h管理起来
+```
+
+自己写很麻烦，去`github`搜：`gitignore`
+
+![image-20241110124812960](./assets/image-20241110124812960.png)
+
+![image-20241110124839632](./assets/image-20241110124839632.png)
+
+复制过来即可
+
+```tex
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+.venv/
+.idea/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+# .python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+#poetry.lock
+
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#pdm.lock
+#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
+#   in version control.
+#   https://pdm.fming.dev/latest/usage/project/#working-with-version-control
+.pdm.toml
+.pdm-python
+.pdm-build/
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
+```
+
+# 十四、 任务管理
+
+-   issues -- 文档与任务管理
+    讨论
+-   wiki
+    百科
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
