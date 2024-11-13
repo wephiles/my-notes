@@ -416,61 +416,165 @@ DataFrame 前面的列均为特征，最后的 `salary` 为目标值。接下来
 
 ------
 
- *问题：*数据集中有多少男性和女性？
+**下面是我做的**
+
+*问题：*数据集中有多少男性和女性？
 
 ```python
-
+male_female = data['sex'].value_counts()
+male_num = male_female[male_female.index == 'Male']['Male']
+female_num = male_female[male_female.index == 'Female']['Female']
+print(f'男性数量: {male_num}, 女性数量: {female_num}')
 ```
 
  *问题：*数据集中女性的平均年龄是多少？
 
 ```python
-
+average_age_female = data[data['sex'] == 'Female']['age'].mean()
+print(f'女性平均年龄是: {average_age_female}.')
 ```
 
  *问题：*数据集中德国公民的比例是多少？
 
 ```python
-
+proportion_germany_adult = data['native-country'].value_counts(normalize=True).get('Germany')
+print(f'德国人所占的比例为: {proportion_germany_adult}')
 ```
 
  *问题：*年收入超过 50K 和低于 50K 人群年龄的平均值和标准差是多少？
 
 ```python
+a = data[data['salary'] == '>50K']['age'].mean()
+b = data[data['salary'] == '>50K']['age'].std()
 
+c = data[data['salary'] == '<=50K']['age'].mean()
+d = data[data['salary'] == '<=50K']['age'].std()
+
+print(f'年收入超过50k的人的平均年龄: {a}, 标准差: {b}, 年收入不超过50k的人的平均年龄: {c}, 标准差: {d}')
 ```
 
  *问题：*年收入超过 50K 的人群是否都接受过高中以上教育？
 
 ```python
-
+res = data[data['salary'] == '>50K'][data['education-num'] < 9].value_counts()
+if len(res) > 0:
+    print(f'年收入超过50k的人全都接受过高中教育: False')
+else:
+    print(f'年收入超过50k的人全都接受过高中教育: True')
 ```
 
  *问题：*使用 `groupby` 和 `describe` 统计不同种族和性别人群的年龄分布数据。
 
 ```python
-
+print('不会')
 ```
 
  *问题：*统计男性高收入人群中已婚和未婚（包含离婚和分居）人群各自所占数量。
 
 ```python
-
+married = len(data[data['salary'] == '>50K'][data['marital-status'] == 'Married-civ-spouse'].value_counts())
+no_married = len(data.value_counts() - married)
+print(f'已婚: {married}, 未婚: {no_married}')
 ```
 
  *问题：*统计数据集中最长周工作小时数及对应的人数，并计算该群体中收入超过 50K 的比例。
 
 ```python
+x = data[data['hours-per-week'] == data['hours-per-week'].max()].value_counts()
+print(f'最长周工作小时的有{len(x)}人。')
 
+proportion = len(data[data['hours-per-week'] == data['hours-per-week'].max()][data['salary'] == '>50K']) / len(data[data['hours-per-week'] == data['hours-per-week'].max()])
+print(f'占比为: {proportion}')
 ```
 
  *问题：*计算各国超过和低于 50K 人群各自的平均周工作时长。
 
 ```
-
+group_data = data.groupby(by='native-country')
+group_data
+a = group_data[group_data['salary'] == '<=50K']['hours-per-week'].mean()
+b = group_data[group_data['salary'] == '>50K']['hours-per-week'].mean()
 ```
 
+**下面是答案**
 
+*问题：*数据集中有多少男性和女性？
+
+```python
+# 通过补充代码得到问题的答案，挑战最终需自行对照末尾的参考答案来评判，系统无法自动评分
+data['sex'].value_counts()
+```
+
+ *问题：*数据集中女性的平均年龄是多少？
+
+```python
+data[data['sex'] == 'Female']['age'].mean()
+```
+
+ *问题：*数据集中德国公民的比例是多少？
+
+```python
+float((data['native-country'] == 'Germany').sum()) / data.shape[0]
+```
+
+ *问题：*年收入超过 50K 和低于 50K 人群年龄的平均值和标准差是多少？
+
+```python
+ages1 = data[data['salary'] == '>50K']['age']
+ages2 = data[data['salary'] == '<=50K']['age']
+print("The average age of the rich: {0} +- {1} years, poor - {2} +- {3} years.".format(
+    round(ages1.mean()), round(ages1.std(), 1),
+    round(ages2.mean()), round(ages2.std(), 1)))
+```
+
+ *问题：*年收入超过 50K 的人群是否都接受过高中以上教育？
+
+```python
+data[data['salary'] == '>50K']['education'].unique()  # No
+```
+
+ *问题：*使用 `groupby` 和 `describe` 统计不同种族和性别人群的年龄分布数据。
+
+```python
+for (race, sex), sub_df in data.groupby(['race', 'sex']):
+    print("Race: {0}, sex: {1}".format(race, sex))
+    print(sub_df['age'].describe())
+```
+
+ *问题：*统计男性高收入人群中已婚和未婚（包含离婚和分居）人群各自所占数量。
+
+```python
+data[(data['sex'] == 'Male') &
+     (data['marital-status'].isin(['Never-married',
+                                   'Separated', 'Divorced']))]['salary'].value_counts()
+data[(data['sex'] == 'Male') &
+     (data['marital-status'].str.startswith('Married'))]['salary'].value_counts()
+data['marital-status'].value_counts()
+```
+
+ *问题：*统计数据集中最长周工作小时数及对应的人数，并计算该群体中收入超过 50K 的比例。
+
+```python
+max_load = data['hours-per-week'].max()
+print("Max time - {0} hours./week.".format(max_load))
+
+num_workaholics = data[data['hours-per-week'] == max_load].shape[0]
+print("Total number of such hard workers {0}".format(num_workaholics))
+
+rich_share = float(data[(data['hours-per-week'] == max_load)
+                        & (data['salary'] == '>50K')].shape[0]) / num_workaholics
+print("Percentage of rich among them {0}%".format(int(100 * rich_share)))
+```
+
+ *问题：*计算各国超过和低于 50K 人群各自的平均周工作时长。
+
+```python
+for (country, salary), sub_df in data.groupby(['native-country', 'salary']):
+    print(country, salary, round(sub_df['hours-per-week'].mean(), 2))
+# 方法二
+pd.crosstab(data['native-country'], data['salary'],
+            values=data['hours-per-week'], aggfunc=np.mean).T
+```
 
 
 
