@@ -333,9 +333,9 @@ sound/                          Top-level package
 			| -> 内部包2
 				| -> __init__.py
 				| -> C.py
-				| -> 内部包3
-					| -> __init__.py
-					| -> D.py
+            | -> 内部包3
+                | -> __init__.py
+                | -> D.py
 	| -> 测试文件夹
 			| -> test.py
 	| -> 入口运行文件（main.py）
