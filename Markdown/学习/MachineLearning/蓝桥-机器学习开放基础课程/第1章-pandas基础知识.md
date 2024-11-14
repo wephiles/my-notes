@@ -113,6 +113,22 @@ df['Churn'].value_counts(normalize=True)
 
 ![image-20241110143745029](./assets/image-20241110143745029.png)
 
+## 1.9 `unique()`方法
+
+`pandas` 库中的 `unique()` 方法用于返回 `Series` 或 `DataFrame` 中唯一值的数组，通常用于查找列中没有重复的值。
+
+1.   **对于 Series（单列数据）**：
+     `unique()` 会返回该列中所有唯一的元素，并按出现顺序返回一个 `numpy.ndarray` 数组。
+
+2.   **对于 DataFrame（多列数据）**：
+     `unique()` 只能应用于单列，因此通常需要先选择某一列来应用该方法。
+
+**注意事项：**
+
+-   `unique()` 返回的是一个 `numpy.ndarray`，并不是 `pandas.Series`。
+
+-   它只返回唯一的值，不会排序，如果需要排序，可以使用 `numpy.sort()` 或 `pandas.Series.sort_values()`。
+
 # 2、 排序
 
 DataFrame 可以根据某个变量的值（也就是列）排序。比如，根据每日消费额排序（设置 ascending=False 倒序排列）。
