@@ -1,4 +1,5 @@
-#!/user/bin/env python
+============================================ pycharm-python文件头模板 ============================================
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @CreateTime : ${YEAR}/${MONTH}/${DAY} ${TIME}
 # @Author     : wephiles@${USER}
@@ -11,3 +12,5 @@
 # @AuthorSite : https://github.com/wephiles or https://gitee.com/wephiles
 
 # --END--
+
+============================================ pycharm其他设置... ============================================
