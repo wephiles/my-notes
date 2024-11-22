@@ -64,7 +64,7 @@ example.py: 上述完成之后，就会把module object赋值给这个叫test的
 import test
 ```
 
-![image-20230429101447902](D:\MDFiles\images\image-20230429101447902.png)
+![image-20230429101447902](\image-20230429101447902.png)
 
 ![image-20230429102016770](D:\MDFiles\images\image-20230429102016770.png)
 
